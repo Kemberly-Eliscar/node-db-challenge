@@ -1,40 +1,61 @@
-
-// exports.up = function(knex) {
-//     // 1 project has many task
-//     return knex.schema.createTable('projects', tbl => {
-//         // tbl.increments creates our unique primary id
-//         tbl.increments()
-
-//         // this adds a project_name field with a 128 character limit and is required. 
-//         tbl.string('project_name', 128).notNullable()
-
-//         //this adds the project_description field.
-//         tbl.string('project_desc')
-
-//         // this adds the project status field with a boolean default value of false. 
-//         tbl.boolean('project_status')
-//     })
-//     .createTable('tasks', tbl => {
-//         tbl.increments();
-//         tbl.string('task_desc').notNullable()
-//         tbl.string('notes', 128)
-//         tbl.boolean('completed')
-
-//         // foreign key that points to projects table
-//         tbl.integer('project_id')
-//         .unsigned() //this means that our integer must be positive
-//         .notNullable() //this means this field is required
-//         .references('id') //this method indicates which field this actually references 
-//         .inTable('projects') //This specify which table this id field is in.
-//     })
+exports.up = async function(knex) {
+    await knex.schema
+      .createTable("projects", table => {
+        table.increments("id");
+        table.string("project_name").notNullable();
+        table.string("project_description");
+        table.boolean("completed").defaultTo(false);
+      })
+      .createTable("resources", table => {
+        table.increments("id");
+        table
+          .string("resource_name", 128)
+          .notNullable()
+          .unique();
+        table.text("resource_description");
+      })
+      .createTable("projects_resources", table => {
+        table.increments("id");
+        table
+          .integer("project_id")
+          .unsigned()
+          .notNullable()
+          .references("id")
+          .inTable("projects")
+          .onUpdate("CASCADE")
+          .onDelete("CASCADE");
+        table
+          .integer("resource_id")
+          .unsigned()
+          .notNullable()
+          .references("id")
+          .inTable("resources")
+          .onUpdate("CASCADE")
+          .onDelete("CASCADE");
+      })
+      .createTable("tasks", table => {
+        table.increments("id");
+        table.text("task_description").notNullable();
+        table.text("notes");
+        table
+          .boolean("completed")
+          .default(false)
+          .notNullable();
+        table
+          .integer("project_id")
+          .unsigned()
+          .notNullable()
+          .references("id")
+          .inTable("projects")
+          .onUpdate("CASCADE")
+          .onDelete("CASCADE");
+      });
+  };
   
-// };
-
-// exports.down = function(knex) {
-//     // we always undo files in the reverse way we set them up. 
-//     // so if we first set up the projects table and then the tasks table, 
-//     // then the task table should be deleted first and then the projects table. 
-//     return knex.schema.dropTableIfExists('tasks')
-//     .dropTableIfExists('projects')
+  exports.down = async function(knex) {
+    await knex.schema.dropTableIfExists("tasks");
+    await knex.schema.dropTableIfExists("projects_resources");
+    await knex.schema.dropTableIfExists("resources");
+    await knex.schema.dropTableIfExists("projects");
+  };
   
-// };
