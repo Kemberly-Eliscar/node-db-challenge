@@ -18,7 +18,7 @@
 //         tbl.increments();
 //         tbl.string('task_desc').notNullable()
 //         tbl.string('notes', 128)
-//         tbl.boolean('task_status')
+//         tbl.boolean('completed')
 
 //         // foreign key that points to projects table
 //         tbl.integer('project_id')
