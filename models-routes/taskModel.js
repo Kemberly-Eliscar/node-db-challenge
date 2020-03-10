@@ -10,8 +10,8 @@ module.exports = {
 function get(id) {
   return db("tasks")
     .join("projects", "projects.id", "tasks.project_id") // join projects on projects.id = tasks.project.id
-    .select("projects.project_name", "projects.project_description") // select project name and project description from projects table
     .where("tasks.project_id", id) 
+    .select("projects.project_name", "projects.project_description") // select project name and project description from projects table
     .then(tasks =>
       tasks.map(task => {
         return {
