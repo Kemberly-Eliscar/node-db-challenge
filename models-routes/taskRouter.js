@@ -2,8 +2,10 @@ const express = require("express");
 const Tasks = require("./taskModel");
 const router = express.Router();
 
+
+// this router end-point retrieves a list of tasks
 router.get("/:id", (req, res) => {
-  Tasks.get(req.params.id)
+  Tasks.get(req.params.id) //using the get method helper in this endpoint 
     .then(task => {
       res.status(200).json(task);
     })
@@ -14,8 +16,9 @@ router.get("/:id", (req, res) => {
     });
 });
 
+// this router end-point adds a task to the task table
 router.post("/", (req, res) => {
-  Tasks.add(req.body)
+  Tasks.add(req.body) //using the add method helper in this endpoint
     .then(task => {
       res.status(201).json(task);
     })

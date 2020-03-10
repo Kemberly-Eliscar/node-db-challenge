@@ -3,6 +3,8 @@ module.exports = {
     get,
     add
 }
+
+// this function retrieves a list of resources
 function get() {
     return db("resources").then(resource =>
       resource.map(resc => {
@@ -13,6 +15,7 @@ function get() {
     );
   }
 
+  // this function adds a resource to the resources table
   function add(resource) {
     return db('resources')
     .insert(resource)
