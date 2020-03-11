@@ -10,8 +10,8 @@ module.exports = {
 function get(id) {
   return db("tasks")
     .join("projects", "projects.id", "tasks.project_id") // join projects on projects.id = tasks.project.id
-    .where("tasks.project_id", id) 
     .select("projects.project_name", "projects.project_description") // select project name and project description from projects table
+    .where({project_id: id}) //fixed this reference point from task_id to project_id
     .then(tasks =>
       tasks.map(task => {
         return {
@@ -20,7 +20,7 @@ function get(id) {
         };
       })
     );
-}
+ }
 function add(task) {
   return db("tasks").insert(task);
 }

@@ -6,7 +6,8 @@ module.exports = {
 
 // this function retrieves a list of resources
 function get() {
-    return db("resources").then(resource =>
+    return db("resources")
+    .then(resource =>
       resource.map(resc => {
         return {
           ...resc,

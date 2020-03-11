@@ -13,4 +13,4 @@ this how we interact with the database.
 - [ ] foreign key
 
 - [ ] What do we need in order to have a _many to many_ relationship between two tables.
-- [ ] we need a table that plays middle man that holds foreign keys that are related to the primary keys on related tables
+- [ ] we need a table that plays middle man that holds foreign keys that to the primary keys on related tables
